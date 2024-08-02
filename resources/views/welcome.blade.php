@@ -1,85 +1,65 @@
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    <title>Laravel</title>
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
-            .full-height {
-                height: 100vh;
-            }
+    <!-- Styles -->
+    <style>
+        html,
+        body {
+            color: black;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 100;
+            height: 100vh;
+            margin: 0;
+        }
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+        table {
+            gap: 5px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            margin: auto;
+        }
 
-            .position-ref {
-                position: relative;
-            }
+        .btn-add {
+            background-color: green;
+            color: white;
+            padding: 10px 20px 10px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+<body>
+    <table class="table">
+        <tr class="">
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Product Type</th>
+            {{-- <th><button onclick="{{route('')}}" class="btn-add">Add Product +</button></th> --}}
+        </tr>
+        <tr class="column">
+            @foreach ($products as $product)
+                <td> {{ $product->id }}</td>
+                <td> {{ $product->name }}</td>
+                <td> {{ $product->price }}</td>
+                <td>{{ $product->productType->name }}</td>
+            @endforeach
+        </tr>
+    </table>
 
-            .content {
-                text-align: center;
-            }
+</body>
 
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <table class="w3-table">
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Product Type</th>
-            </tr>
-            <tr>
-                @foreach ($products as $product )
-                <td>  {{$product->id}}</td>
-                <td>  {{$product->name}}</td>
-                <td>  {{$product->price}}</td>                  
-                @endforeach
-            </tr>
-            </table>
-       
-    </body>
 </html>
