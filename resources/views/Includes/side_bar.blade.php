@@ -36,7 +36,8 @@
 <div class="side-bar">
     <h1>Dashboard</h1>
     <button class="view-property-type">
-        <a class="{{ request()->is('/') ? 'active' : '' }}" href="{{ route('create') }}">View Product Types</a>
+        <a class="{{ request()->is('/add/product/type') ? 'active' : '' }}" href="{{ route('create') }}">View Product
+            Types</a>
     </button>
     <button class="add-product">
         <a class="{{ request()->is('/add/new/product') ? 'active' : '' }}" href="{{ route('add_new_product') }}">Add
