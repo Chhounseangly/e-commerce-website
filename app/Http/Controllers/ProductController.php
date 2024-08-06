@@ -3,84 +3,72 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\ProductType;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    //handle post data as RestAPI
-    public function addProductByApi(Request $req)
-    {
-        //insert product data
-        $product = DB::table('products')
-            ->insert([
-                'product_type_id' => $req->product_type_id,
-                'name' => $req->name,
-                'price' => $req->price
-            ]);
-        if (!$product) {
-            return response()->json([
-                'message' => 'Add Product Failed.',
-                'data' => $product,
-            ]);
-        }
-        return response()->json([
-            'message' => 'Add Product Success.',
-            'data' => true,
-        ]);
-    }
-
     //handle Query Products 
     public function index()
     {
         $products = Product::get();
-        return view('welcome', ['products' => $products]);
+        return view('index', ['products' => $products]);
     }
 
-    //handle AddProduct
-    public function addProduct(Request $req)
+    public function create()
     {
-        $product = new Product();
-        $product->name = $req['name'];
-        $product->price = $req['price'];
-        $product->save();
+        $product_types = ProductType::get();
+        return view('add_product', ['product_types' => $product_types]);
+    }
+    //handle post data as RestAPI
+    public function store(Request $req)
+    {
+        $product = DB::table('products')->insert([
+            'name' => $req->name_product,
+            'price' => $req->price,
+            'product_type_id' => $req->product_type_id
+        ]);
+        if (!$product) {
+            return redirect()->route('index')->with(['message' => 'Product added failed']);
+        }
+        return redirect()->route('index')->with(['message' => 'Product added successfully']);
+    }
 
-        return view('welcome', [
-            'message' => 'Congrate you are add product successfully.',
+    public function edit($id)
+    {
+        $product = Product::findorFail($id);
+        $product_types = ProductType::get();
+
+        return view('edit_product',  [
+            'product' => $product,
+            'product_types' => $product_types
         ]);
     }
 
+
     //handle delete product
-    public function deleteProduct($id)
+    public function destroy($id)
     {
         $product = Product::findorFail($id);
         try {
             $product->delete();
-            return view('welcome', [
-                "message" => "Delete Product Successfully"
-            ]);
+            return redirect()->route('index')->with("message", "Delete Product Successfully");
         } catch (Exception $e) {
-            return view('welcome', [
-                'message' => $e->getMessage(),
-            ]);
+            return redirect()->route('index')->with("message", $e->getMessage());
         }
     }
 
     //handle update product
-    public function updateProduct(Request $req, $id)
+    public function update(Request $req, $id)
     {
-        $product = Product::findorFail($id);
-        try {
-            $product->name = $req['name'];
-            $product->price = $req['price'];
-            $product->save();
-            return view('welcome', [
-                'message' => 'Update Product Successfully.'
-            ]);
-            //code...
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
+        DB::table('products')->where('id', $id)->update([
+            'name' => $req->name,
+            'price' => $req->price,
+            'product_type_id' => $req->product_type_id,
+        ]);
+
+        return redirect()->route('index')->with('message', 'Update product successfully');
     }
 }

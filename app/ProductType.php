@@ -8,6 +8,7 @@ class ProductType extends Model
 {
     protected $fillable = [
         'id',
-        'name'
+        'name',
+        'product_type_id'
     ];
 }
