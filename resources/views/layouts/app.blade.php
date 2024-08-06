@@ -1,3 +1,4 @@
+<!-- Stored in resources/views/layouts/app.blade.php -->
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
 
@@ -5,18 +6,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Laravel</title>
-
-    <!-- Fonts -->
+    <title>@yield('title')</title>
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-    <!-- Styles -->
     <style>
         html,
         body {
-            height: 100vh;
             margin: 0;
+            box-sizing: border-box;
         }
 
         .title {
@@ -27,7 +23,7 @@
         .form {
             padding: 5px;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 5px;
         }
 
@@ -40,6 +36,7 @@
             padding: 5px;
             box-sizing: border-box;
         }
+
 
         .btn-create {
             font-size: 16px;
@@ -72,7 +69,8 @@
         table {
             font-family: arial, sans-serif;
             border-collapse: collapse;
-            width: 100%;
+            width: 80%;
+            height: fit-content;
         }
 
         td,
@@ -85,32 +83,28 @@
         tr:nth-child(even) {
             background-color: #dddddd;
         }
+
+        a {
+            text-decoration: none;
+        }
+
+        .btn-view,
+        .btn-add {
+            background: rgb(56, 179, 18);
+            padding: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
 <body>
-    <h1 class="title">Edit Product Type of {{ $product_type->name }}</h1>
-    {{-- alert message  --}}
-    @if ($message = Session::get('message'))
-        @component('success_toast')
-            @slot('message')
-                {{ $message }}
-            @endslot
-            <button class="btn-hide" type="button" onclick="">X</button>
-        @endcomponent
-    @endif
-    <form class="form" action="{{ route('update_product_type', $product_type->id) }}" method="POST"
-        enctype="multipart/form-data">
-        {{ method_field('put') }}
-        {{ csrf_field() }}
-        <div style="display: flex; flex-direction: column; width: fit-content; gap: 5px;" class="mb-3">
-            <label for="name" class="form-label">Product type name *</label>
-            <input value="{{ $product_type->name }}" type="text" class="input" name="name" required>
+    <div style="display: flex; gap: 10px;">
+        @include('Includes.side_bar')
+        <div style="margin-top: 5px; width: 100%">
+            @yield('content')
         </div>
-        <div>
-            <button type="submit" class="btn-create">Save</button>
-        </div>
-    </form>
+    </div>
 </body>
 
 </html>
