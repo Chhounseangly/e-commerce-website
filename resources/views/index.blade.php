@@ -4,11 +4,6 @@
 
 @section('title', 'Page Title')
 
-@section('sidebar')
-
-    <p>This is appended to the master sidebar.</p>
-@endsection
-
 @section('content')
     {{-- alert message  --}}
     @if ($message = Session::get('message'))

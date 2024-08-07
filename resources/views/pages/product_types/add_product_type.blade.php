@@ -2,13 +2,11 @@
 
 @section('title', 'Property Type')
 
-@section('sidebar')
-
 @section('content')
     <h1 class="title">Add New Product Type</h1>
     {{-- alert message  --}}
     @if ($message = Session::get('message'))
-        @component('success_toast')
+        @component('components.success_toast')
             @slot('message')
                 {{ $message }}
             @endslot

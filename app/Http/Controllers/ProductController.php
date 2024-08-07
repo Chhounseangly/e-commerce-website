@@ -20,7 +20,7 @@ class ProductController extends Controller
     public function create()
     {
         $product_types = ProductType::get();
-        return view('add_product', ['product_types' => $product_types]);
+        return view('pages.products.add_product', ['product_types' => $product_types]);
     }
     //handle post data as RestAPI
     public function store(Request $req)
@@ -41,7 +41,7 @@ class ProductController extends Controller
         $product = Product::findorFail($id);
         $product_types = ProductType::get();
 
-        return view('edit_product',  [
+        return view('pages.products.edit_product',  [
             'product' => $product,
             'product_types' => $product_types
         ]);
