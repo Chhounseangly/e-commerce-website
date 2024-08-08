@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-
     public function index()
     {
         return view('pages.auths.login');
@@ -17,16 +16,16 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'username' => 'required|string',
             'password' => 'required',
         ]);
         $credentials = $request->only(['username', 'password']);
         //check is login incorrent credentials
-        if (!Auth::attempt($credentials)) {
-            return view('index', ['message' => 'Invalid credentials']);
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/')->with('message', 'Login successful.');
         }
-        $request->session()->regenerate();
-        return redirect()->route('index')->with('message', 'Login Successfully');
+        return redirect()->back()->withErrors(['error' => 'Invalided Credentials']);
     }
 }

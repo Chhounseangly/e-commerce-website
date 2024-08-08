@@ -9,6 +9,5 @@ class ProductType extends Model
     protected $fillable = [
         'id',
         'name',
-        'product_type_id'
     ];
 }

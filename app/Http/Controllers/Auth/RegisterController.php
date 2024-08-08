@@ -39,6 +39,7 @@ class RegisterController extends Controller
             //we can add path to redirect for it ex. intended('/home')
             return redirect()->intended('/')->with('message', 'Registration and login successful.');
         }
+        dd('fdsa');
         // Handle login failure (shouldn't occur in this case)
         return redirect()->back()->withErrors(['error' => 'Login failed']);
     }

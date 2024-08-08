@@ -6,30 +6,42 @@ use App\Product;
 use App\ProductType;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+    protected $product;
+    protected $product_types;
+
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(Product $product, ProductType $product_types)
+    {
+        $this->product = $product;
+        $this->product_types = $product_types->get();
+    }
+
     //handle Query Products 
     public function index()
     {
-        $products = Product::get();
-        return view('index', ['products' => $products]);
+        $products = $this->product->get();
+        return view('index', compact('products'));
     }
 
     public function create()
     {
-        $product_types = ProductType::get();
-        return view('pages.products.add_product', ['product_types' => $product_types]);
+        $product_types = $this->product_types;
+        return view('pages.products.add_product', compact('product_types'));
     }
     //handle post data as RestAPI
-    public function store(Request $req)
+    public function store(Request $request)
     {
-        $product = DB::table('products')->insert([
-            'name' => $req->name_product,
-            'price' => $req->price,
-            'product_type_id' => $req->product_type_id
+        $data = $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|string',
+            'product_type_id' => 'required|string'
         ]);
+        $product = $this->product->insert($data);
         if (!$product) {
             return redirect()->route('index')->with(['message' => 'Product added failed']);
         }
@@ -38,15 +50,11 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = Product::findorFail($id);
-        $product_types = ProductType::get();
+        $product = $this->product->findorFail($id);
+        $product_types = $this->product_types;
 
-        return view('pages.products.edit_product',  [
-            'product' => $product,
-            'product_types' => $product_types
-        ]);
+        return view('pages.products.edit_product', compact('product'), compact('product_types'));
     }
-
 
     //handle delete product
     public function destroy($id)
@@ -63,12 +71,11 @@ class ProductController extends Controller
     //handle update product
     public function update(Request $req, $id)
     {
-        DB::table('products')->where('id', $id)->update([
+        $this->product->where('id', $id)->update([
             'name' => $req->name,
             'price' => $req->price,
             'product_type_id' => $req->product_type_id,
         ]);
-
         return redirect()->route('index')->with('message', 'Update product successfully');
     }
 }
