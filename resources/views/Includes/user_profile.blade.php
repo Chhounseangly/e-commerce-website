@@ -1,4 +1,4 @@
-<div class="w-fit mx-auto py-4">
+<div class="w-fit mx-auto py-4 text-sm">
     @if (auth()->check())
         <div class="flex space-y-1 flex-col">
             <div>Username: {{ auth()->user()->username }}</div>
@@ -8,8 +8,7 @@
                 {{ csrf_field() }}
                 <button type="submit"
                     class="flex w-full justify-center 
-                rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold 
-             ">Logout</button>
+                rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold">Logout</button>
             </form>
         </div>
     @else

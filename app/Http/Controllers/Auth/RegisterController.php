@@ -36,11 +36,10 @@ class RegisterController extends Controller
         if (Auth::attempt(['username' => $user->username, 'password' => $request->input('password')])) {
             $request->session()->regenerate();
             //interded it' mean return to prev page or 
+            return redirect()->intended('/admin')->with('success', 'Registration and login successful.');
             //we can add path to redirect for it ex. intended('/home')
-            return redirect()->intended('/')->with('message', 'Registration and login successful.');
         }
-        dd('fdsa');
         // Handle login failure (shouldn't occur in this case)
-        return redirect()->back()->withErrors(['error' => 'Login failed']);
+        return redirect()->back()->withErrors(['error' => 'Registration failed']);
     }
 }

@@ -13,7 +13,8 @@
         @endcomponent
     @endif
     <h2 class="font-bold text-2xl py-4">Edit Product Type</h2>
-    <form class="flex flex-col gap-2 w-1/2" action="{{ route('update_product_type', $product_type->id) }}" method="POST">
+    <form class="flex flex-col gap-2 w-1/2" action="{{ route('admin.product-type.update', $product_type->id) }}"
+        method="POST">
         {{ method_field('put') }}
         {{ csrf_field() }}
         <label for="name" class="text-sm">Product Type</label>

@@ -3,35 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Product;
-use App\ProductType;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     protected $product;
-    protected $product_types;
 
     /**
      * Create a new controller instance.
      */
-    public function __construct(Product $product, ProductType $product_types)
+    public function __construct(Product $product)
     {
         $this->product = $product;
-        $this->product_types = $product_types->get();
     }
 
     //handle Query Products 
     public function index()
     {
         $products = $this->product->get();
-        return view('index', compact('products'));
+        return view('pages.admin.home', compact('products'));
     }
 
     public function create()
     {
-        $product_types = $this->product_types;
-        return view('pages.products.add_product', compact('product_types'));
+        return view('pages.admin.products.add_product');
     }
     //handle post data as RestAPI
     public function store(Request $request)
@@ -43,39 +40,39 @@ class ProductController extends Controller
         ]);
         $product = $this->product->insert($data);
         if (!$product) {
-            return redirect()->route('index')->with(['message' => 'Product added failed']);
+            return redirect()->route('admin.page')->with(['message' => 'Product added failed']);
         }
-        return redirect()->route('index')->with(['message' => 'Product added successfully']);
+        return redirect()->route('admin.page')->with(['message' => 'Product added successfully']);
+    }
+
+
+    //handle delete product
+    public function destroy($id)
+    {
+        $product = $this->product->findorFail($id);
+        try {
+            $product->delete();
+            return redirect()->route('admin.page')->with("message", "Delete Product Successfully");
+        } catch (Exception $e) {
+            return redirect()->route('admin.page')->with("message", $e->getMessage());
+        }
     }
 
     public function edit($id)
     {
         $product = $this->product->findorFail($id);
-        $product_types = $this->product_types;
 
-        return view('pages.products.edit_product', compact('product'), compact('product_types'));
-    }
-
-    //handle delete product
-    public function destroy($id)
-    {
-        $product = Product::findorFail($id);
-        try {
-            $product->delete();
-            return redirect()->route('index')->with("message", "Delete Product Successfully");
-        } catch (Exception $e) {
-            return redirect()->route('index')->with("message", $e->getMessage());
-        }
+        return view('pages.admin.products.edit_product', compact('product'));
     }
 
     //handle update product
     public function update(Request $req, $id)
     {
-        $this->product->where('id', $id)->update([
+        DB::table('products')->where('id', $id)->update([
             'name' => $req->name,
             'price' => $req->price,
             'product_type_id' => $req->product_type_id,
         ]);
-        return redirect()->route('index')->with('message', 'Update product successfully');
+        return redirect()->route('admin.page')->with('message', 'Update product successfully');
     }
 }

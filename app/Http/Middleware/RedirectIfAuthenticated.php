@@ -23,9 +23,13 @@ class RedirectIfAuthenticated
         // }
         //option 2
         if (Auth::check()) {
+            if (auth()->user()->role_id === 1) {
+                return redirect('superadmin');
+            } else if (auth()->user()->role_id === 2) {
+                return redirect('admin');
+            }
             return redirect('/'); // Replace with desired redirect path
         }
-
 
         return $next($request);
     }

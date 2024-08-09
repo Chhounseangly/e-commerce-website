@@ -11,7 +11,9 @@
     }
 </style>
 
-<div class="toast">
-    <div class="alert-title">{{ $message }}</div>
-    {{ $slot }}
+<div class="p-2 text-sm w-1/2 text-white rounded-xl bg-emerald-500 font-normal" role="alert">
+    <span class="font-semibold mr-2">Success</span> {{ $message }}
+    @if ($slot)
+        {{ $slot }}
+    @endif
 </div>

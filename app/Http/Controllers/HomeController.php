@@ -1,14 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
+use App\Product;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\User;
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class HomeController extends Controller
 {
+
+    protected $product;
+
+    public function __construct(Product $product)
+    {
+        $this->product = $product;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,8 +22,20 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
-        return view('pages.super_admin.home', compact('users'));
+        $products = $this->product->with('productType')->get();
+
+        if (Auth::check()) {
+            $role = Auth::user()->role_id;
+            if ($role === 1) {
+                return redirect()->route('superadmin.index');
+            } else if ($role === 2) {
+                return redirect()->route('admin.page');
+            }
+            // Default redirect for other roles
+            return view('index', compact('products'));
+        } else {
+            return view('index', compact('products'));
+        }
     }
 
     /**
@@ -47,11 +65,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        $user = Auth::user();
-        dd($user);
-        return view('users.show', compact('user'));
+        //
     }
 
     /**

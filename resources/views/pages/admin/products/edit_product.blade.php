@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Property Type')
-
+@section('title', 'Edit Product')
 
 @section('content')
 
@@ -15,9 +14,8 @@
         @endcomponent
     @endif
     <h2 class="font-bold text-2xl py-4">Edit Product</h2>
-    <form class="w-1/2 flex flex-col gap-2" action="{{ route('update_product', $product->id) }}" method="POST"
-        enctype="multipart/form-data">
-        {{ method_field('put') }}
+    <form class="w-1/2 flex flex-col gap-2" action="{{ route('admin.product.update', $product->id) }}" method="POST">
+        {{ method_field('PUT') }}
         {{ csrf_field() }}
         <div>
             <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Product Name</label>
@@ -41,7 +39,7 @@
         <div>
             <label for="price" class="block text-sm font-medium leading-6 text-gray-900">Price</label>
             <div class="my-2">
-                <input value="{{ $product->price }}" placeholder="Enter the product name" id="price" name="price"
+                <input value="{{ $product->price }}" placeholder="Enter the price" id="price" name="price"
                     type="text" autocomplete="price"
                     class="pl-2  block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
             </div>

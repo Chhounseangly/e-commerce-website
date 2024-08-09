@@ -13,7 +13,7 @@
         @endcomponent
     @endif
     <h2 class="font-bold text-2xl py-4">Add Product</h2>
-    <form class="w-1/2 flex flex-col gap-2" action="{{ route('store_new_product') }}" method="POST">
+    <form class="w-1/2 flex flex-col gap-2" action="{{ route('admin.product.store') }}" method="POST">
         {{ csrf_field() }}
 
         {{-- input product name --}}

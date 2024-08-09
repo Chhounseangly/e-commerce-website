@@ -24,8 +24,15 @@ class LoginController extends Controller
         //check is login incorrent credentials
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/')->with('message', 'Login successful.');
+            $role = Auth::user()->role_id;
+            if ($role === 2) {
+                return redirect()->intended('/admin')->with('message', 'Login successful.');
+            } else if ($role === 3) {
+                return redirect()->intended('/')->with('message', 'Login successful.');
+            } else {
+                return redirect()->intended('/superadmin')->with('message', 'Login successful.');
+            }
         }
-        return redirect()->back()->withErrors(['error' => 'Invalided Credentials']);
+        return redirect()->back()->withInput()->withErrors(['error' => 'Invalided Credentials']);
     }
 }
