@@ -1,46 +1,14 @@
-<style>
-    .side-bar {
-        width: 200px;
-        height: 100vh;
-        padding: 5px;
-        background: rgb(199, 204, 209);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .view-property-type,
-    .add-product {
-        border: none;
-        width: 100%;
-        background: transparent;
-        font-size: 16px;
-    }
-
-    .view-property-type a,
-    .add-product a {
-        width: 100% color: black;
-    }
-
-    .view-property-type a:hover,
-    .add-product a:hover {
-        color: blue;
-    }
-
-    .active {
-        color: blue;
-    }
-</style>
-
-<div class="side-bar">
-    <h1>Dashboard</h1>
-    <button class="view-property-type">
-        <a class="{{ request()->is('/add/product/type') ? 'active' : '' }}" href="{{ route('create') }}">View Product
-            Types</a>
-    </button>
-    <button class="add-product">
-        <a class="{{ request()->is('/add/new/product') ? 'active' : '' }}" href="{{ route('add_new_product') }}">Add
-            Product +</a>
-    </button>
+<div class="w-[20%] bg-gray-900 h-screen flex flex-col text-white">
+    <h1 class="py-3 text-center border-b border-b-white text-xl"><a href="{{ route('admin.page') }}">Dashboard</a></h1>
+    <div class="flex text-start flex-col gap-2 flex-1 p-4">
+        <a class="py-2 {{ request()->is('admin') ? 'border-b border-blue-500' : 'hover:border-b ' }}"
+            href="{{ route('admin.page') }}">
+            Home
+        </a>
+        <a class="py-2 {{ request()->is('admin/product-type/home') ? 'border-b border-blue-500' : 'hover:border-b' }}"
+            href="{{ route('admin.product-type.home') }}">Product Types</a>
+    </div>
+    <div>
+        @include('Includes.user_profile')
+    </div>
 </div>

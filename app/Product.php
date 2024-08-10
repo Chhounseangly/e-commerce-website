@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Product extends Model
 {
-
-    protected $fillable = ['id', 'name', 'price'];
+    protected $fillable = ['id', 'name', 'price', 'product_type_id'];
 
     //product belong to productType
     public function productType(): BelongsTo
