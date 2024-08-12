@@ -13,9 +13,10 @@
         @endcomponent
     @endif
     <h2 class="font-bold text-2xl py-4">Add Product</h2>
-    <form class="w-1/2 flex flex-col gap-2" action="{{ route('admin.product.store') }}" method="POST">
+    <form class="w-1/2 flex flex-col gap-2" action="{{ route('admin.product.store') }}" method="POST"
+        enctype="multipart/form-data">
         {{ csrf_field() }}
-
+        <input type="text" name="user_id" hidden value="{{ auth()->user()->id }}">
         {{-- input product name --}}
         <div>
             <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Product Name</label>
@@ -52,6 +53,10 @@
                     <strong>{{ $errors->first('price') }}</strong>
                 </span>
             @endif
+        </div>
+        <div class="flex flex-col gap-2">
+            <label for="formFileSm" class="form-label">Please choose Image *</label>
+            <input class="form-control form-control-md" id="formFileSm" name="image" type="file">
         </div>
         <div class="mt-5">
             <button type="submit"

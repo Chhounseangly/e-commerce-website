@@ -31,7 +31,12 @@
             </div>
         </td>
     @endif
-    <td class="p-4 flex items-center gap-2 border-b border-gray-300">
+    @if (isset($image))
+        <td class="p-4 border-b border-gray-300">
+            {{ $image }}
+        </td>
+    @endif
+    <td class="p-4 border-b border-gray-300">
         {{ $actions }}
     </td>
 </tr>

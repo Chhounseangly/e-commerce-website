@@ -11,9 +11,9 @@
         </div>
     @endif
     <h2 class="text-2xl font-bold py-4">User Table</h2>
-    <button class="p-2 bg-blue-700 text-white rounded-md">
+    {{-- <button class="p-2 bg-blue-700 text-white rounded-md">
         <a href="{{ route('admin.product.create') }}">User +</a>
-    </button>
+    </button> --}}
     <table class="mt-4 w-full min-w-max table-auto text-left">
         <thead>
             {{-- header table --}}
@@ -66,7 +66,7 @@
                         {{ $user->role_id }}
                     @endslot
                     @slot('actions')
-                        <form action="{{ '' }}" method="POST">
+                        <form action="{{ route('superadmin.destroy', $user->id) }}" method="POST">
                             {{ method_field('delete') }}
                             {{ csrf_field() }}
 
@@ -74,11 +74,11 @@
                                 @include('Includes.delete_icon')
                             </button>
                         </form>
-                        <button>
+                        {{-- <button>
                             <a href="{{ '' }}">
                                 @include('Includes.edit_icon')
                             </a>
-                        </button>
+                        </button> --}}
                     @endslot
                 @endcomponent
             </tr>

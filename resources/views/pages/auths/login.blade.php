@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Login')
 
-
 @section('content')
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -22,7 +21,7 @@
                 <div>
                     <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
                     <div class="my-2">
-                        <input value="{{ old('username') }}" id="username" name="username" type="username"
+                        <input required value="{{ old('username') }}" id="username" name="username" type="username"
                             autocomplete="username"
                             class="pl-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>
@@ -35,7 +34,7 @@
                 <div>
                     <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
                     <div class="my-2">
-                        <input value="{{ old('password') }}" id="password" name="password" type="password"
+                        <input required value="{{ old('password') }}" id="password" name="password" type="password"
                             autocomplete="current-password"
                             class="pl-2  block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>

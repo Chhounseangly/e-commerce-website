@@ -1,7 +1,9 @@
 <?php
 
-
+use App\Product;
 use Illuminate\Support\Facades\Route;
+
+use function Psy\bin;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,8 +20,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('/add-product', 'ProductController@addProductByApi');
+// Route::post('/add-product', 'ProductController@addProductByApi');
 
-Route::post('/add-product-type', 'ProductTypeController@store');
-Route::get('/get-product-type', 'ProductTypeController@index');
+// Route::post('/add-product-type', 'ProductTypeController@store');
+// Route::get('/get-product-type', 'ProductTypeController@index');
 
+// Route::get('product/{product}', 'ProductController@getProducts');
+Route::get('product/{id}', 'ProductController@getProductByApi');
