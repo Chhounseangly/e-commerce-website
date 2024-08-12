@@ -18,6 +18,8 @@ class ProductTypeController extends Controller
 
     public function index()
     {
+        $this->authorize('product_type');
+
         return view('pages.admin.product_types.home');
     }
 

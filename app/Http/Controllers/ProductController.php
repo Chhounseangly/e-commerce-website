@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Exception;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     protected $product;
-
     /**
      * Create a new controller instance.
      */
@@ -33,23 +34,39 @@ class ProductController extends Controller
     //handle post data as RestAPI
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $validatedData = $request->validate([
+            'user_id' => '',
             'name' => 'required|string',
             'price' => 'required|string',
             'product_type_id' => 'required|string'
         ]);
-        $product = $this->product->insert($data);
+        // Check if the image file is present and encode it to base64
+        $imageData = null;
+        if ($request->hasFile('image')) {
+            $imageData = base64_encode(file_get_contents($request->file('image')->path()));
+        }
+        $validatedData['image'] = $imageData;
+
+        $product = $this->product->insert($validatedData);
         if (!$product) {
             return redirect()->route('admin.page')->with(['message' => 'Product added failed']);
         }
         return redirect()->route('admin.page')->with(['message' => 'Product added successfully']);
     }
 
+    public function getProductByApi($id)
+    {
+        $product = $this->product->findorFail($id);
+        return response()->json($product);
+    }
 
     //handle delete product
     public function destroy($id)
     {
         $product = $this->product->findorFail($id);
+        //if own product can delete
+        $this->authorize('product-delete', $product);
+
         try {
             $product->delete();
             return redirect()->route('admin.page')->with("message", "Delete Product Successfully");

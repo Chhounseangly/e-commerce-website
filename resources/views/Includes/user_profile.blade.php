@@ -7,8 +7,8 @@
                 {{ method_field('get') }}
                 {{ csrf_field() }}
                 <button type="submit"
-                    class="flex w-full justify-center 
-                rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold">Logout</button>
+                    class="flex  justify-center 
+                rounded-md bg-indigo-600 px-3 py-1.5 text-xs lg:text-sm font-semibold">Logout</button>
             </form>
         </div>
     @else

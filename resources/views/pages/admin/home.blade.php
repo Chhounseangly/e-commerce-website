@@ -47,6 +47,12 @@
                 </th>
                 <th class="cursor-pointer border-y border-gray-950 p-4">
                     <p
+                        class="antialiased font-bold font-sans text-sm text-blue-gray-900 flex items-center justify-between gap-2 leading-none opacity-70">
+                        Image
+                    </p>
+                </th>
+                <th class="cursor-pointer border-y border-gray-950 p-4">
+                    <p
                         class="antialiased font-sans text-sm text-blue-gray-900 flex items-center justify-between gap-2 leading-none opacity-70">
                         Actions
                     </p>
@@ -68,20 +74,29 @@
                     @slot('type')
                         {{ $product->productType->name }}
                     @endslot
+                    @slot('image')
+                        @isset($product->image)
+                            <img height="100px" width="100px" alt="images" src="data:image/jpeg;base64,{{ $product->image }}"></td>
+                        @endisset
+                        
+                    @endslot
                     @slot('actions')
-                        <form action="{{ route('admin.delete.product', $product->id) }}" method="POST">
-                            {{ method_field('delete') }}
-                            {{ csrf_field() }}
-
-                            <button type="submit" class="btn-delete deletebutton">
-                                @include('Includes.delete_icon')
+                        @can('product-delete', $product)
+                            <form id="delete-form" action="{{ route('admin.product.delete', $product->id) }}" method="POST">
+                                {{ method_field('delete') }}
+                                {{ csrf_field() }}
+                                <button type="submit" id="delete-btn" class="delete-btn">
+                                    @include('Includes.delete_icon')
+                                </button>
+                            </form>
+                        @endcan
+                        @can('product-edit', $product)
+                            <button>
+                                <a href="{{ route('admin.product.edit', $product->id) }}">
+                                    @include('Includes.edit_icon')
+                                </a>
                             </button>
-                        </form>
-                        <button>
-                            <a href="{{ route('admin.product.edit', $product->id) }}">
-                                @include('Includes.edit_icon')
-                            </a>
-                        </button>
+                        @endcan
                     @endslot
                 @endcomponent
             </tr>

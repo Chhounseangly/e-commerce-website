@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -85,6 +86,12 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findorFail($id);
+        try {
+            $user->delete();
+            return redirect()->back()->with(['message' => "Remove user success."]);
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Remove Failed']);
+        }
     }
 }
