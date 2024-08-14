@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Exception;
-use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -23,7 +20,7 @@ class ProductController extends Controller
     //handle Query Products 
     public function index()
     {
-        $products = $this->product->get();
+        $products = $this->product->where('user_id', auth()->user()->id)->get();
         return view('pages.admin.home', compact('products'));
     }
 
@@ -61,9 +58,8 @@ class ProductController extends Controller
     }
 
     //handle delete product
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        $product = $this->product->findorFail($id);
         //if own product can delete
         $this->authorize('product-delete', $product);
 
@@ -75,21 +71,65 @@ class ProductController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Product $product)
     {
-        $product = $this->product->findorFail($id);
-
         return view('pages.admin.products.edit_product', compact('product'));
     }
 
     //handle update product
-    public function update(Request $req, $id)
+    public function update(Request $req, Product $product)
     {
-        DB::table('products')->where('id', $id)->update([
-            'name' => $req->name,
-            'price' => $req->price,
-            'product_type_id' => $req->product_type_id,
-        ]);
+        $product->name = $req->name;
+        $product->price = $req->price;
+        $product->product_type_id = $req->product_type_id;
         return redirect()->route('admin.page')->with('message', 'Update product successfully');
     }
+
+
+    //section Api
+    public function getAllProducts()
+    {
+        return response()->json([
+            'data' => $this->product->where('user_id', 2)->get(),
+            'message' => 'Get products success.'
+        ], 200);
+    }
+    public function getDetailProduct(Product $product)
+    {
+        return response()->json([
+            'data' => $product,
+            'message' => 'Get product success.'
+        ], 200);
+    }
+    public function createProduct(Request $req)
+    {
+        $this->product->insert([
+            'name' => $req->name,
+            'user_id' => 2,
+            'price' => $req->price,
+            'product_type_id' => $req->product_type_id,
+            'image' => $req->has('image') ? base64_encode(file_get_contents($req->file('image')->path())) : '',
+        ]);
+        return response()->json([
+            'data' => null,
+            'message' => 'The Product added success.'
+        ], 200);
+    }
+    public function editProduct(Request $req, Product $product)
+    {
+        $product->name = $req->name;
+        $product->price = $req->price;
+        $product->product_type_id = $req->product_type_id;
+        if ($req->has('image')) {
+            $product->image = base64_encode(file_get_contents($req->file('image')->path()));
+        }
+        return response()->json(['data' => null, 'message' => 'The Product edited success'], 200);
+    }
+
+    public function deleteProduct(Product $product)
+    {
+        $product->delete();
+        return response()->json(['data' => null, 'message' => 'The Product delete success'], 200);
+    }
+    //end section api
 }

@@ -1,29 +1,27 @@
 <?php
 
-use App\Product;
 use Illuminate\Support\Facades\Route;
-
-use function Psy\bin;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
 
-// Route::post('/add-product', 'ProductController@addProductByApi');
+// Route::get('product/{id}', 'ProductController@getProductByApi');
 
-// Route::post('/add-product-type', 'ProductTypeController@store');
-// Route::get('/get-product-type', 'ProductTypeController@index');
+//routes product
+Route::prefix('admin/product')->group(function () {
+    Route::get('/', 'ProductController@getAllProducts');
+    Route::post('/', 'ProductController@createProduct');
+    Route::get('/{product}', 'ProductController@getDetailProduct');
+    Route::put('/{product}', 'ProductController@editProduct');
+    Route::delete('/{product}', 'ProductController@deleteProduct');
+});
 
-// Route::get('product/{product}', 'ProductController@getProducts');
-Route::get('product/{id}', 'ProductController@getProductByApi');
+//routes product types
+Route::prefix('superadmin/product/type')->group(function () {
+    Route::get('/', 'ProductTypeController@getAllProductTypes');
+    Route::post('/', 'ProductTypeController@createProductType');
+    Route::get('/{product_type}', 'ProductTypeController@getOneProductType');
+    Route::put('/{product_type}', 'ProductTypeController@editProductType');
+    Route::delete('/{product_type}', 'ProductTypeController@deleteProductType');
+});
