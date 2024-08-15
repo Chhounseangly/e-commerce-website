@@ -24,18 +24,18 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::name('product.')->prefix('product')->group(function () {
         Route::get('/create', 'ProductController@create')->name('create');
         Route::post('/store', 'ProductController@store')->name('store');
-        Route::get('/{id}/edit', 'ProductController@edit')->name('edit');
-        Route::put('/{id}/update', 'ProductController@update')->name('update');
-        Route::delete('/{id}/delete', 'ProductController@destroy')->name('delete');
+        Route::get('/{product}/edit', 'ProductController@edit')->name('edit');
+        Route::put('/{product}/update', 'ProductController@update')->name('update');
+        Route::delete('/{product}/delete', 'ProductController@destroy')->name('delete');
     });
     //Product Type Routes
     Route::name('product-type.')->prefix('product-type')->group(function () {
         Route::get('/', 'ProductTypeController@index')->name('home');
         Route::get('/create', 'ProductTypeController@create')->name('create');
         Route::post('/store', 'ProductTypeController@store')->name('store');
-        Route::get('/{id}/edit', 'ProductTypeController@edit')->name('edit');
-        Route::put('/{id}/update', 'ProductTypeController@update')->name('update');
-        Route::delete('/{id}/delete', 'ProductTypeController@destroy')->name('delete');
+        Route::get('/{product-type}/edit', 'ProductTypeController@edit')->name('edit');
+        Route::put('/{product-type}/update', 'ProductTypeController@update')->name('update');
+        Route::delete('/{product-type}/delete', 'ProductTypeController@destroy')->name('delete');
     });
 });
 

@@ -78,7 +78,6 @@
                         @isset($product->image)
                             <img height="100px" width="100px" alt="images" src="data:image/jpeg;base64,{{ $product->image }}"></td>
                         @endisset
-                        
                     @endslot
                     @slot('actions')
                         @can('product-delete', $product)
