@@ -28,7 +28,7 @@ class RouteServiceProvider extends ServiceProvider
 
         parent::boot();
         Route::bind('product', function ($value) {
-            return Product::where('id', $value)->firstOrFail();
+            return Product::where('id', $value)->with('productType')->firstOrFail();
         });
         Route::bind('product-type', function ($value) {
             return ProductType::where('id', $value)->firstOrFail();

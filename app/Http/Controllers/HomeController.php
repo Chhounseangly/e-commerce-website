@@ -15,6 +15,7 @@ class HomeController extends Controller
     {
         $this->product = $product;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -102,5 +103,15 @@ class HomeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    //api call
+    public function getProducts()
+    {
+        return response()->json([
+            'data' => $this->product->with('productType')->get(),
+            'message' => 'Get product success'
+        ], 200);
     }
 }

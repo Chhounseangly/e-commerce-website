@@ -6,7 +6,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-// Route::get('product/{id}', 'ProductController@getProductByApi');
+Route::get('/product', 'HomeController@getProducts');
+Route::get('/product/type', 'ProductTypeController@getAllProductTypes');
+Route::get('/product/type/{product_type}', 'ProductController@getProductByCategory');
+Route::get('/product/{product}', 'ProductController@getDetailProduct');
 
 //routes product
 Route::prefix('admin/product')->group(function () {

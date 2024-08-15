@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\ProductType;
 use Exception;
 use Illuminate\Http\Request;
+use Cloudder;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -84,13 +87,12 @@ class ProductController extends Controller
         $product->product_type_id = $req->product_type_id;
         return redirect()->route('admin.page')->with('message', 'Update product successfully');
     }
-
-
+    
     //section Api
     public function getAllProducts()
     {
         return response()->json([
-            'data' => $this->product->where('user_id', 2)->get(),
+            'data' => $this->product->where('user_id', 2)->with('productType:id,name')->get(),
             'message' => 'Get products success.'
         ], 200);
     }
@@ -130,6 +132,15 @@ class ProductController extends Controller
     {
         $product->delete();
         return response()->json(['data' => null, 'message' => 'The Product delete success'], 200);
+    }
+
+    public function getProductByCategory(ProductType $productType)
+    {
+        $products = $productType->with('products')->find($productType->id);
+        return response()->json([
+            'data' => $products,
+            'message' => "Get product success",
+        ], 200);
     }
     //end section api
 }

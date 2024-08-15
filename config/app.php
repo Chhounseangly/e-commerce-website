@@ -137,6 +137,7 @@ return [
     */
 
     'providers' => [
+        JD\Cloudder\CloudderServiceProvider::class,
 
         /*
          * Laravel Framework Service Providers...
@@ -191,6 +192,7 @@ return [
     */
 
     'aliases' => [
+        'Cloudder' => JD\Cloudder\Facades\Cloudder::class,
 
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
