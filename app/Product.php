@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Product extends Model
 {
+    public $timestamps = false; // Disables automatic timestamps
     protected $fillable = [
         'id',
         'user_id',

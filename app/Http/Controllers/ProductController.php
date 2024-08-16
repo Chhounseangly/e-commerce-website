@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Cloudder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -87,7 +88,7 @@ class ProductController extends Controller
         $product->product_type_id = $req->product_type_id;
         return redirect()->route('admin.page')->with('message', 'Update product successfully');
     }
-    
+
     //section Api
     public function getAllProducts()
     {
@@ -119,12 +120,20 @@ class ProductController extends Controller
     }
     public function editProduct(Request $req, Product $product)
     {
-        $product->name = $req->name;
-        $product->price = $req->price;
-        $product->product_type_id = $req->product_type_id;
+        // Update the product's properties
+        if ($product->name) {
+            $product->name = $req->name;
+        }
+        if ($product->price) {
+            $product->price = $req->price;
+        }
         if ($req->has('image')) {
             $product->image = base64_encode(file_get_contents($req->file('image')->path()));
         }
+        // Save the updated product to the database
+        $product->save();
+
+
         return response()->json(['data' => null, 'message' => 'The Product edited success'], 200);
     }
 
