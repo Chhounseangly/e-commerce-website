@@ -110,7 +110,7 @@ class HomeController extends Controller
     public function getProducts()
     {
         return response()->json([
-            'data' => $this->product->with('productType')->get(),
+            'data' => $this->product->with('productType')->paginate(5),
             'message' => 'Get product success'
         ], 200);
     }

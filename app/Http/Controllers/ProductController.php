@@ -93,7 +93,7 @@ class ProductController extends Controller
     public function getAllProducts()
     {
         return response()->json([
-            'data' => $this->product->where('user_id', 2)->with('productType:id,name')->get(),
+            'data' => $this->product->where('user_id', 2)->with('productType:id,name')->paginate(5),
             'message' => 'Get products success.'
         ], 200);
     }
